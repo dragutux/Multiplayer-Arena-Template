@@ -1,8 +1,12 @@
-﻿using DarkRift.Server;
+﻿using UnityEngine;
+using DarkRift.Server;
 using MySql.Data.MySqlClient;
 using System.Collections;
-using UnityEngine;
-
+/*
+using System.Collections.Generic;
+using System.Threading;
+using DarkRift;
+*/
 namespace Server
 {
     public class Database : MonoBehaviour
@@ -198,6 +202,7 @@ namespace Server
             {
                 if (openConnection())
                 {
+                    Debug.Log("openConnection returned " + openConnection());
                     string query = "SELECT * FROM accounts WHERE email='" + email + "'";
 
                     MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -295,15 +300,20 @@ namespace Server
         bool openConnection()
         {
             if (connection == null)
+            {
+                Debug.Log("no link, opening DB");
                 Connect();
+            }                
 
             try
             {
                 connection.OpenAsync();
+                Debug.Log("can open DB");
                 return true;
             }
             catch (MySqlException ex)
             {
+                Debug.Log("cant open DB");
                 Server.getInstance.Log("Error on opening a database connection! " + ex.Message, LogType.Error);
                 return false;
             }
