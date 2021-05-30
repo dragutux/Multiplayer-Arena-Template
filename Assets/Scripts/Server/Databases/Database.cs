@@ -15,10 +15,10 @@ namespace Server
             StartCoroutine(SaveAccountsThread());
         }
 
-        [SerializeField] string DbServer = "127.0.0.1";
-        [SerializeField] string DbName = "earthlike";
-        [SerializeField] string DbUsername = "root";
-        [SerializeField] string DbPassword = "";
+        [SerializeField] string DbServer = "192.168.1.2";
+        [SerializeField] string DbName = "arena";
+        [SerializeField] string DbUsername = "arena";
+        [SerializeField] string DbPassword = "arena";
         [SerializeField] string DBSSslMode = "none";
 
         public void Login(IClient client, string email, string password)
@@ -289,6 +289,8 @@ namespace Server
         {
             string connectionString = "Server=" + DbServer + ";Database=" + DbName + ";Uid=" + DbUsername + ";Pwd=" + DbPassword + ";SslMode=" + DBSSslMode + ";";
             connection = new MySqlConnection(connectionString);
+
+            Debug.Log("connection parameters is : " + connectionString);
         }
         bool openConnection()
         {

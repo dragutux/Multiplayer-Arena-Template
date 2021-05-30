@@ -36,7 +36,7 @@ public class BuildManager
         BuildPlayerOptions options = new BuildPlayerOptions();
         options.scenes = scenes;
         options.locationPathName = _path;
-        options.target = BuildTarget.StandaloneWindows;
+        options.target = BuildTarget.StandaloneWindows64;
         options.options = BuildOptions.None;
         BuildPipeline.BuildPlayer(options);
 
@@ -60,7 +60,7 @@ public class BuildManager
         BuildPlayerOptions options = new BuildPlayerOptions();
         options.scenes = scenes;
         options.locationPathName = _path;
-        options.target = BuildTarget.StandaloneWindows;
+        options.target = BuildTarget.StandaloneWindows64;
         options.options = BuildOptions.EnableHeadlessMode | BuildOptions.Development | BuildOptions.StripDebugSymbols;
         BuildPipeline.BuildPlayer(options);
 
@@ -108,7 +108,7 @@ public class BuildManager
         BuildPlayerOptions options = new BuildPlayerOptions();
         options.scenes = scenes;
         options.locationPathName = _path;
-        options.target = BuildTarget.StandaloneWindows;
+        options.target = BuildTarget.StandaloneWindows64;
         options.options = BuildOptions.EnableHeadlessMode;
         BuildPipeline.BuildPlayer(options);
 

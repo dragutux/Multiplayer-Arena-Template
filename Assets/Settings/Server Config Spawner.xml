@@ -37,10 +37,11 @@
   <!--
     Defines the plugins that will be loaded by the server.
   -->
-  <plugins loadByDefault="true">
+  <plugins loadByDefault="false">
     <!-- Example:
     <plugin type="Sniffer" load="false" />
     -->
+    <plugin type="HttpHealthCheck" load="false"/>
   </plugins>
 
   <!--
