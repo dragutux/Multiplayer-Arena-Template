@@ -66,3 +66,8 @@ crashlytics-build.properties
 
 
 # End of https://www.gitignore.io/api/unity
+/Data
+/Library
+/Logs
+/obj
+/builds
