@@ -20,7 +20,7 @@ namespace GameServer
 
         public void _Start()
         {
-            Application.targetFrameRate = 60;
+            Application.targetFrameRate = 90;
 
             server = GetComponent<XmlUnityServer>();
             handleData = GetComponent<HandleData>();

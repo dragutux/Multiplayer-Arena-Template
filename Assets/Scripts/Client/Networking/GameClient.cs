@@ -48,8 +48,16 @@ namespace Client
 
         public void Send(DarkRiftWriter writer, ushort packetID, SendMode sendMode = SendMode.Reliable)
         {
+            //if(packetID.GetType == Packets.Move)
             using (Message msg = Message.Create(packetID, writer))
-                client.SendMessage(msg, sendMode);
+                if(packetID == 9)
+                {
+                    client.SendMessage(msg, SendMode.Unreliable); 
+                } else
+                {
+                    client.SendMessage(msg, sendMode);
+
+                }
         }
 
         public void Move(float horizontal, float vertical, bool running)

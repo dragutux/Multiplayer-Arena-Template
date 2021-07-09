@@ -51,6 +51,8 @@ namespace GameServer
             }
 
             GameObject p = Instantiate(playerPrefab, player.Position, player.Rotation);
+            Debug.Log("p position in world " + player.Position);
+
             WorldPlayer _p = p.GetComponent<WorldPlayer>();
             _p.SetUp(player);
 

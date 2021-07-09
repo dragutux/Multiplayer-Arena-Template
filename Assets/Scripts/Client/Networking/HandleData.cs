@@ -96,6 +96,7 @@ namespace Client
 
                         Vector3 position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                         Quaternion rotation = new Quaternion(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                        Debug.Log("spawn at : " + position);
 
                         Debug.Log("Player was already inside: " + players.ContainsKey(clientID));
                         if (!players.ContainsKey(clientID))

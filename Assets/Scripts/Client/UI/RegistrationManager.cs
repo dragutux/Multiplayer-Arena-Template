@@ -8,7 +8,7 @@ namespace Client
         public static RegistrationManager getInstance;
         void Awake() { getInstance = this; }
 
-        [SerializeField] InputField emailInput, passwordInput, passwordRepeatInput, nameInput;
+        [SerializeField] InputField emailInput,/* passwordInput, passwordRepeatInput,*/ nameInput;
         [SerializeField] Slider genderSlider;
         [SerializeField] Text genderText, log;
 
@@ -19,19 +19,19 @@ namespace Client
         public void Register()
         {
             string email = emailInput.text;
-            string password = passwordInput.text;
-            string passwordRepeat = passwordRepeatInput.text;
+            //string password = passwordInput.text;
+            //string passwordRepeat = passwordRepeatInput.text;
             string name = nameInput.text;
             Gender gender = (Gender)((int)genderSlider.value);
 
             Clean();
 
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(passwordRepeat) || string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(email) || /*string.IsNullOrEmpty(password) || string.IsNullOrEmpty(passwordRepeat) ||*/ string.IsNullOrEmpty(name))
             {
                 log.text = "Invalid email or password or name!";
                 return;
             }
-
+            /*
             if (email.Length < 2 || password.Length < 2 || passwordRepeat.Length < 2 || name.Length < 2)
             {
                 log.text = "Email or password or name is too small!";
@@ -43,8 +43,9 @@ namespace Client
                 log.text = "Passwords must match!";
                 return;
             }
+            */
 
-            Client.getInstance.Register(email, password, name, gender);
+            Client.getInstance.Register(email, /*password,*/ name, gender);
         }
 
         public void RegistrationResponse(bool ok, string response)
@@ -62,7 +63,7 @@ namespace Client
 
         public void Clean()
         {
-            emailInput.text = passwordInput.text = passwordRepeatInput.text = nameInput.text = log.text = string.Empty;
+            emailInput.text = /*passwordInput.text = passwordRepeatInput.text =*/ nameInput.text = log.text = string.Empty;
         }
 
         public void Back()

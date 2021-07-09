@@ -8,7 +8,7 @@ namespace Client
         public static LoginManager getInstance;
         void Awake() { getInstance = this; }
 
-        [SerializeField] InputField emailInput, passwordInput;
+        [SerializeField] InputField nickInput, passwordInput;
         [SerializeField] Text log;
 
 		//toggle save password
@@ -16,30 +16,35 @@ namespace Client
 		//on change screen to this, load the password and username from playerspref if exist
         public void Login()
         {
-            string email = emailInput.text;
-            string password = passwordInput.text;
+            string nickname = nickInput.text;
+
+            //string password = passwordInput.text;
 
             Clean();
 
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(nickname) /*|| string.IsNullOrEmpty(password)*/)
             {
-                log.text = "Email or password was empty!";
+                log.text = "Nick was empty!";
                 return;
             }
+            nickInput.text = "dragutux";
 
+            // no strangulation of nicks
+            /*
             if (!email.Contains("@"))
             {
                 log.text = "Invalid email!";
                 return;
             }
-
-            if (email.Length < 2 || password.Length < 2)
+            */
+            // remove password later
+            if (nickname.Length < 2 /*|| password.Length < 2*/)
             {
                 log.text = "Email or password is too small!";
                 return;
             }
 
-            Client.getInstance.Login(email, password);
+            Client.getInstance.Login(nickname/*, password*/);
         }
 
         public void LoginResponse(bool ok, string response)
@@ -59,7 +64,8 @@ namespace Client
 
         public void Clean()
         {
-            emailInput.text = passwordInput.text = log.text = string.Empty;
+            nickInput.text =/* passwordInput.text = */log.text = string.Empty;
+            nickInput.text = "dragutux";
         }
 
         public void Register()

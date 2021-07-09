@@ -25,9 +25,9 @@ namespace Server
         [SerializeField] string DbPassword = "arena";
         [SerializeField] string DBSSslMode = "none";
 
-        public void Login(IClient client, string email, string password)
+        public void Login(IClient client, string nickname/*, string password*/)
         {
-            password = Cryptography.Encrypt_Custom(password);
+            //password = Cryptography.Encrypt_Custom(password);
 
             Debug.Log("Login");
 
@@ -38,12 +38,12 @@ namespace Server
                     Server.getInstance.LoginResponse(false, "Client already logged in!", client);
                     return;
                 }
-                else if (isLoggedIn(email))
+                else if (isLoggedIn(nickname))
                 {
                     Server.getInstance.LoginResponse(false, "Account already logged in!", client);
                     return;
                 }
-                else if (!accountExists(email))
+                else if (!accountExists(nickname))
                 {
                     Server.getInstance.LoginResponse(false, "Account not found!", client);
                     return;
@@ -51,7 +51,13 @@ namespace Server
 
                 if (openConnection())
                 {
+                    // switch to nick, keep orig request as ref
+                    /*
                     string query = "SELECT * FROM accounts WHERE email='" + email + "' AND password='" + password + "'";
+                    */
+
+                    string query = "SELECT * FROM accounts WHERE name='" + nickname + "'";//  /* AND password='" + password */ + "'";
+                    Debug.Log("loginq : " + query);
 
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     MySqlDataReader reader = cmd.ExecuteReader();
@@ -62,7 +68,7 @@ namespace Server
                         string name = reader.GetString(reader.GetOrdinal("name"));
                         Gender gender = (Gender)reader.GetInt32(reader.GetOrdinal("gender"));
 
-                        Account account = new Account(client, email, name, password, gender, AccountState.InLobby, -1, "None");
+                        Account account = new Account(client, nickname, name, /*password,*/ gender, AccountState.InLobby, -1, "None");
 
                         Holder.accounts.Add(client, account);
 
@@ -85,32 +91,36 @@ namespace Server
                 Server.getInstance.Log("Error on trying to login from client with id: " + client.ID + " with error: " + ex.Message, LogType.Error);
             }
         }
-        public void Register(IClient client, string email, string password, string name, Gender gender)
+        public void Register(IClient client, string email,/* string password, */ string name, Gender gender)
         {
-            password = Cryptography.Encrypt_Custom(password);
+            //password = Cryptography.Encrypt_Custom(password);
 
             try
             {
-                if (!email.Contains("@") || !email.Contains(".") || email.Length < 2)
+                /*if (!email.Contains("@") || !email.Contains(".") || email.Length < 2)
                 {
                     Server.getInstance.RegistrationResponse(false, "Wrong email form!", client);
                     return;
                 }
+                */
                 if (gender != Gender.Male && gender != Gender.Female)
                 {
                     Server.getInstance.RegistrationResponse(false, "Invalid gender!", client);
                     return;
                 }
+                /*
                 if (password.Length <= 4)
                 {
                     Server.getInstance.RegistrationResponse(false, "Password's length sould be greater than 4!", client);
                     return;
                 }
+                
                 if (accountExists(email))
                 {
                     Server.getInstance.RegistrationResponse(false, "Account already exists!", client);
                     return;
                 }
+                */
                 if (accountNameExists(name))
                 {
                     Server.getInstance.RegistrationResponse(false, "Account name already exists!", client);
@@ -119,7 +129,8 @@ namespace Server
 
                 if (openConnection())
                 {
-                    string query = "INSERT INTO accounts(email, password, name, gender) VALUES ('" + email + "', '" + password + "', '" + name + "', '" + (int)gender + "')";
+                    // remove email later add steamID
+                    string query = "INSERT INTO accounts(email, password, name, gender) VALUES ('" + email + "', '" /*+ password +  "', '" */+ name + "', '" + (int)gender + "')";
 
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.ExecuteNonQuery();
@@ -148,7 +159,7 @@ namespace Server
             {
                 if (openConnection())
                 {
-                    string query = "UPDATE accounts SET password='" + Holder.accounts[client].Password + "', gender='" + (int)Holder.accounts[client].Gender + "' WHERE email='" + Holder.accounts[client].Email + "'";
+                    string query = "UPDATE accounts SET "/*password='" + Holder.accounts[client].Password */ + "', gender='" + (int)Holder.accounts[client].Gender + "' WHERE email='" + Holder.accounts[client].Email + "'";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.ExecuteNonQuery();
 
@@ -196,14 +207,14 @@ namespace Server
 
             return false;
         }
-        public bool accountExists(string email)
+        public bool accountExists(string nickname)
         {
             try
             {
                 if (openConnection())
                 {
                     Debug.Log("openConnection returned " + openConnection());
-                    string query = "SELECT * FROM accounts WHERE email='" + email + "'";
+                    string query = "SELECT * FROM accounts WHERE name='" + nickname + "'";
 
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     MySqlDataReader reader = cmd.ExecuteReader();
@@ -221,7 +232,7 @@ namespace Server
             }
             catch (MySqlException ex)
             {
-                Server.getInstance.Log("Error on trying to seach for an account with email: " + email + " with error: " + ex.Message, LogType.Error);
+                Server.getInstance.Log("Error on trying to seach for an account with email: " + nickname + " with error: " + ex.Message, LogType.Error);
                 return true;
             }
         }
@@ -265,7 +276,7 @@ namespace Server
                 yield return null;
             }
         }
-        public string getPassword(string email)
+        public string getPassword(string nickname)
         {
             string password = string.Empty;
 
@@ -273,7 +284,7 @@ namespace Server
             {
                 if (openConnection())
                 {
-                    string query = "SELECT * FROM accounts WHERE email='" + email + "'";
+                    string query = "SELECT * FROM accounts WHERE name='" + nickname + "'";
 
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     MySqlDataReader reader = cmd.ExecuteReader();
@@ -285,7 +296,7 @@ namespace Server
                     closeConnection();
                 }
             }
-            catch (MySqlException ex) { Server.getInstance.Log("Error on searching for a password for email: " + email + " with error: " + ex.Message, LogType.Error); }
+            catch (MySqlException ex) { Server.getInstance.Log("Error on searching for a password for email: " + nickname + " with error: " + ex.Message, LogType.Error); }
             return password;
         }
 

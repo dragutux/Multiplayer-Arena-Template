@@ -72,22 +72,22 @@ namespace Client
                 client.SendMessage(msg, sendMode);
         }
 
-        public void Login(string email, string password)
+        public void Login(string nickname/*, string password*/)
         {
             using (DarkRiftWriter writer = DarkRiftWriter.Create())
             {
-                writer.Write(email);
-                writer.Write(password);
+                writer.Write(nickname);
+                //writer.Write(password);
 
                 Send(writer, Packets.Login);
             }
         }
-        public void Register(string email, string password, string _name, Gender gender)
+        public void Register(string email, /*string password,*/ string _name, Gender gender)
         {
             using (DarkRiftWriter writer = DarkRiftWriter.Create())
             {
                 writer.Write(email);
-                writer.Write(password);
+                //writer.Write(password);
                 writer.Write(_name);
                 writer.Write((int)gender);
 

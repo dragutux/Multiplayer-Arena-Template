@@ -87,6 +87,7 @@ namespace GameServer
                 }
                 else if (msg.Tag == Packets.Jump)
                 {
+                    Debug.Log("jump received");
                     int temp = reader.ReadInt32();
 
                     Player p = Holder.players[e.Client];

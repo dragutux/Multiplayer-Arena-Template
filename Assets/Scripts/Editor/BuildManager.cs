@@ -13,12 +13,12 @@ public class BuildManager
         BuildGameserver();
     }
 
-    [MenuItem("Custom Tools/Build Tools/Full Build - Server")]
+    [MenuItem("Custom Tools/Build Tools/Build - Servers Only")]
     public static void FullBuild_Server()
     {
         BuildServer();
         BuildSpawner();
-        BuildGameserver();
+        BuildGameserver(); // shh dodo
     }
 
     [MenuItem("Custom Tools/Build Tools/Build Client")]

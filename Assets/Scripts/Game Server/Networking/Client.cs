@@ -72,7 +72,14 @@ namespace GameServer
         public void Send(DarkRiftWriter writer, ushort packetID, SendMode sendMode = SendMode.Reliable)
         {
             using (Message msg = Message.Create(packetID, writer))
-                client.SendMessage(msg, sendMode);
+                if(packetID == 9)
+                {
+                    client.SendMessage(msg, SendMode.Unreliable);
+                } else
+                {
+                    client.SendMessage(msg, sendMode);
+                }
+                
         }
 
         public void SendWelcome()

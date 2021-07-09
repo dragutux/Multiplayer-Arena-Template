@@ -36,20 +36,20 @@ namespace Server
                 else if (msg.Tag == Packets.Login)
                 {
                     string email = reader.ReadString();
-                    string password = reader.ReadString();
+                    //string password = reader.ReadString();
 
-                    Debug.Log("Got Login: email: " + email + " password: " + password);
+                    Debug.Log("Got Login: email: " + email /*+ " password: " + password*/);
 
-                    Database.getInstance.Login(e.Client, email, password);
+                    Database.getInstance.Login(e.Client, email/*, password*/);
                 }
                 else if (msg.Tag == Packets.Registration)
                 {
                     string email = reader.ReadString();
-                    string password = reader.ReadString();
+                    //string password = reader.ReadString();
                     string _name = reader.ReadString();
                     Gender gender = (Gender)reader.ReadInt32();
 
-                    Database.getInstance.Register(e.Client, email, password, _name, gender);
+                    Database.getInstance.Register(e.Client, email,/* password,*/ _name, gender);
                 }
                 else if (msg.Tag == Packets.Play)
                 {

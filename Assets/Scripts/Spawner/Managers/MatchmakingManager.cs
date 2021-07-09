@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
-
+using Debug = UnityEngine.Debug;
 namespace Spawner
 {
     public class MatchmakingManager : MonoBehaviour
@@ -99,7 +99,9 @@ namespace Spawner
                 goto creationFailed;
 
             ProcessStartInfo p = new ProcessStartInfo();
+            var PATH = p.WorkingDirectory = "D:\\UnityProjects\\Fightworkshop\\Multiplayer-Arena-Template\\builds\\GameServer\\";
             p.FileName = Server.getInstance.gameServerPath;
+            
             p.CreateNoWindow = false;
             p.WindowStyle = ProcessWindowStyle.Normal;
             p.Arguments = "-port " + port + " -spawner " + 4297 + " -id " + id;

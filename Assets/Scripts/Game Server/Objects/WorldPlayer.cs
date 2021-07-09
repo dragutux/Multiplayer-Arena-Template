@@ -15,6 +15,7 @@ namespace GameServer
         CharacterController controller;
 
         public Player player { get; private set; }
+        public Rigidbody rbody;
 
         Vector3 moveDirection = Vector3.zero;
         Vector3 previousPosition = Vector3.zero;
@@ -26,6 +27,7 @@ namespace GameServer
             this.player = player;
 
             controller = GetComponent<CharacterController>();
+            rbody = GetComponent<Rigidbody>();
 
             previousPosition = transform.position;
         }
@@ -50,20 +52,31 @@ namespace GameServer
             float _speed = walkSpeed;
             if (i.running)
                 _speed = runSpeed;
-
+            Debug.Log("i.running " + i.running);
+            /*
             if (controller.isGrounded)
             {
-                moveDirection = new Vector3(i.horizontal, 0.0f, i.vertical);
+                moveDirection = new Vector3(i.horizontal * _speed, 0.0f, i.vertical * _speed);
                 moveDirection *= _speed;
             }
 
+
             if (!controller.isGrounded)
-				moveDirection.y -= gravity * Time.deltaTime;
+				moveDirection.y -= gravity * Time.deltaTime;*/
+            moveDirection = new Vector3(i.horizontal * walkSpeed, 0.0f, i.vertical * walkSpeed);
+            
+            //moveDirection.y = -Physics.gravity.magnitude * Time.fixedDeltaTime;
+            //Debug.Log("down to ground = " + -Physics.gravity.magnitude * Time.fixedDeltaTime);
 
-            controller.Move(moveDirection * Time.deltaTime);
+            //rbody.AddForce(moveDirection * Time.fixedDeltaTime, ForceMode.VelocityChange);
+            Debug.Log("move : " + moveDirection);
+            //System.Threading.Thread.Sleep(500);
 
+            //controller.Move(moveDirection * Time.deltaTime);
+            rbody.MovePosition(transform.position + Time.deltaTime * walkSpeed * transform.TransformDirection(moveDirection.x, 0f, moveDirection.z));
+            
             byte s = 0;
-            if (i.horizontal != 0.0f && i.vertical != 0.0f)
+            if (i.horizontal != 0.0f || i.vertical != 0.0f)
             {
                 if (i.running)
                     s = 2;
@@ -73,8 +86,10 @@ namespace GameServer
             if (previusAnimationSpeed != s)
             {
                 Server.getInstance.AnimatePlayer(player, s);
+                
                 previusAnimationSpeed = s;
             }
+            Debug.Log("anim : " + s.ToString());
         }
         public void Move(float horizontal, float vertical, bool running)
         {
@@ -82,10 +97,12 @@ namespace GameServer
         }
         public void Jump()
         {
-            if (controller.isGrounded)
-                moveDirection.y = jumpSpeed;
+            float jump = 400;
+            rbody.AddForce(jump * rbody.mass * Time.deltaTime * Vector3.up, ForceMode.Impulse);
+            /*if (controller.isGrounded)
+                moveDirection.y = jumpSpeed;*/
 
-            controller.Move(moveDirection * Time.deltaTime);
+            //controller.Move(moveDirection * Time.deltaTime);
         }
     }
 }
